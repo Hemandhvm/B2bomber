@@ -23,7 +23,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             padding: 2rem;
         }
 
@@ -42,16 +42,29 @@
             letter-spacing: -0.05em;
         }
 
-        /* 3. High-Standard Card Container */
+        /* 3. Grid Container for Layout */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        /* 4. High-Standard Card Container */
         figure.card {
             background: #1e293b;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             padding: 1.25rem;
-            max-width: 500px;
             width: 100%;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 2rem;
         }
 
         /* Subtle Hover Animation */
@@ -60,16 +73,17 @@
             box-shadow: 0 25px 30px -5px rgba(56, 189, 248, 0.15);
         }
 
-        /* 4. Styled Image Wrapper */
-        figure.card img {
+        /* 5. Media Styling (Image & Video) */
+        figure.card img,
+        figure.card video {
             width: 100%;
             height: auto;
-            display: block;
             border-radius: 10px;
             object-fit: cover;
+            margin-bottom: 0.5rem;
         }
 
-        /* 5. Sleek Caption Styling */
+        /* 6. Sleek Caption Styling */
         figcaption {
             margin-top: 1rem;
             font-size: 1rem;
@@ -90,49 +104,210 @@
             background-color: #ef4444; /* Alert badge dot */
             border-radius: 50%;
         }
+
+        /* ------------------------------------ */
+        /* 7. LOGIN OVERLAY STYLES              */
+        /* ------------------------------------ */
+        #login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-box {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .login-box h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: #f8fafc;
+        }
+
+        .login-box p {
+            color: #94a3b8;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.25rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: #0f172a;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group input:focus {
+            border-color: #38bdf8;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #38bdf8, #818cf8);
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        #error-msg {
+            color: #ef4444;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Hide main content initially */
+        #protected-content {
+            display: none;
+            width: 100%;
+            max-width: 1000px;
+        }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>B2 Bomber 🛫</h1>
-    </header>
+    <!-- 🔒 LOGIN OVERLAY -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2>Access Restricted</h2>
+            <p>Enter your credentials to view content</p>
+            
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter username" required>
+            </div>
 
-    <!-- High-Standard Card Container -->
-    <figure class="card">
-        <img src="abijithvp2026-08-13 221340.png" alt="Abhijith VP chat">
-        <img src="vpchat2026-08-14 at 1.31.50 PM.jpeg" alt="Abhijith VP chat">
-        <figcaption>Abhijith VP leaked chat</figcaption>
-    </figure>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+            </div>
 
-    <div class="gallery-grid">
-        
+            <button class="login-btn" onclick="checkCredentials()">Unlock Access</button>
+            <p id="error-msg">Incorrect username or password!</p>
+        </div>
+    </div>
 
-        <!-- Video Card -->
+    <!-- 🔓 PROTECTED CONTENT SECTION -->
+    <div id="protected-content">
+        <header>
+            <h1>B2 Bomber 🛫</h1>
+        </header>
+
+        <!-- Leaked Chat Card -->
         <figure class="card">
-            <video controls preload="metadata">
-                <source src="project official video 2025-07-10 at 15.23.08_50ce0f04.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <figcaption>project official</figcaption>
+            <img src="vpashokcht2026-08-13 at 10.14.28 PM.jpeg" alt="Abhijith VP chat">
+            <img src="vpchat2026-08-14 at 1.31.50 PM.jpeg" alt="Abhijith VP chat">
+            <figcaption>Abhijith VP leaked chat</figcaption>
+        </figure>
+
+        <!-- Gallery Grid for Media -->
+        <div class="gallery-grid">
+            <!-- Video Card 1 -->
+            <figure class="card">
+                <video controls preload="metadata">
+                    <source src="project official video 2025-07-10 at 15.23.08_50ce0f04.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <figcaption>project official</figcaption>
+            </figure>
+
+            <!-- Video Card 2 -->
+            <figure class="card">
+                <video controls preload="metadata">
+                    <source src="vp 2026-08-14 at 11.53.10 AM.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <figcaption>Video Clips</figcaption>
+            </figure>
+        </div>
+
+        <!-- Image Card -->
+        <figure class="card">
+            <img src="vpbike2026-08-14 at 11.52.31 AM.jpeg" alt="Fiance">
+            <figcaption>Fiance</figcaption>
         </figure>
     </div>
 
-    <figure class="card">
-        <img src="vpbike2026-08-14 at 11.52.31 AM.jpeg" alt="">
-        <figcaption>Fiance</figcaption>
-    </figure>
+    <!-- 🧠 LOGIN AUTHENTICATION LOGIC -->
+    <script>
+        // 🔑 SET YOUR DESIRED USERNAME AND PASSWORD HERE
+        const VALID_USERNAME = "hemu";
+        const VALID_PASSWORD = "b2bomber123";
 
-     <!-- Video Card -->
-        <figure class="card">
-            <video controls preload="metadata">
-                <source src="vp 2026-08-14 at 11.53.10 AM.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <figcaption></figcaption>
-        </figure>
+        function checkCredentials() {
+            const userInput = document.getElementById("username").value;
+            const passInput = document.getElementById("password").value;
+            const errorMsg = document.getElementById("error-msg");
 
-        
+            if (userInput === VALID_USERNAME && passInput === VALID_PASSWORD) {
+                // Hide Login Screen and Show Website Content
+                document.getElementById("login-overlay").style.display = "none";
+                document.getElementById("protected-content").style.display = "block";
+            } else {
+                // Show Error
+                errorMsg.style.display = "block";
+            }
+        }
 
+        // Allow pressing 'Enter' key to log in
+        document.addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                checkCredentials();
+            }
+        });
+    </script>
+<!-- Audio Card -->
+<figure class="card">
+    <audio controls preload="metadata">
+        <source src="" type="audio/mpeg">
+        <source src="WhatsApp Audio 2026-08-13 at 10.15.26 PM.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
+    </audio>
+    <figcaption>no bad intention</figcaption>
+</figure>
 </body>
 </html>
